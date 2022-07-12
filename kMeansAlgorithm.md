@@ -1,6 +1,7 @@
 **Linear Algebra and K-means clustering algorithm**
 
 Zachary Bohn, Reuella Jacob, Matthew Niculae and Roberto Rodriguez
+
 April 26, 2022
 
 ## **Abstract**
