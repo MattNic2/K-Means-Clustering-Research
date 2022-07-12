@@ -34,7 +34,7 @@ data.head()
 data.describe()
 ```
 
-![](RackMultipart20220711-1-rboya3_html_4ba06b147154a84.png)
+![Table](/Picture1.png)
 
 
 In order to visualize this dataset, a scatterplot that graphs data based on (feature1, feature2) pairs was utilized.
@@ -55,7 +55,7 @@ plt.show()
 
 The result of this code segment was as follows:
 
-![](RackMultipart20220711-1-rboya3_html_538619a3372abd3a.png)
+![Picture2](/Picture2.png)
 
 The amount of centroids is randomly initialized in the following functions and randomly distributed throughout the scatterPlot
 
@@ -89,7 +89,7 @@ if figure == True:
 
 Centroid locations are denoted by stars that appear in different colors based on a previously initialized array
 
-![](RackMultipart20220711-1-rboya3_html_bb39b3a0ee175a06.png)
+![Picture3](/Picture3.png)
 
 In the following code, we measure the euclidean distance between each centroid and data point to assign the data point to a unique cluster classification.
 ```
@@ -122,7 +122,7 @@ def euclidean_distance_func(figure=True):
 ```
 The cluster classification of these data points results in the following scatterPlot.
 
-![](RackMultipart20220711-1-rboya3_html_f75d06f7a5e83c6.png)
+![Picture4](/Picture4.png)
 
 Following classification of the data points, it is necessary that we find the mean of each cluster and assign the centroid to that mean.
 
@@ -158,7 +158,7 @@ move_centroids()
 ```
 Centroid relocation to the cluster means results in the following distribution:
 
-![](RackMultipart20220711-1-rboya3_html_bc68193b69c79713.png)
+![Picture5](Picture5.png)
 
 The centroids are now very far from convergence and as a result we need to repeat the following steps: 1.) Measure the Euclidean Distance between each datapoint and centroid 2.) Calculate the mean of each cluster and update the centroid with the mean of each cluster. This will be repeated until convergence or until the maximum number of iterations is reached.
 ```
@@ -174,11 +174,17 @@ for _ inrange(10):
 ```
 The code returns the following succession of scatter plots:
 
-1.) ![](RackMultipart20220711-1-rboya3_html_a05967f3a1c795a7.png)4.) ![](RackMultipart20220711-1-rboya3_html_f5aed184324d34db.png)
+1.) ![1](/1.png)
 
-2.) ![](RackMultipart20220711-1-rboya3_html_44aa3eca1bf9afc.png)5.) ![](RackMultipart20220711-1-rboya3_html_f5aed184324d34db.png)
+2.) ![2](/2.png)
 
-3.) ![](RackMultipart20220711-1-rboya3_html_ec73f30f71a84fe3.png)6.) ![](RackMultipart20220711-1-rboya3_html_f5aed184324d34db.png)
+3.) ![3](/3.png)
+
+4.) ![4](/4.png)
+
+5.) ![5](/5.png)
+
+6.) ![6](/6.png)
 
 ## **Optimization**
 
@@ -218,7 +224,7 @@ for n_cluster inrange(1,10):
 ```
 Plotting these relationships would yield the following curve:
 
-![](RackMultipart20220711-1-rboya3_html_911db6a512fe5800.png)
+![Picture6](/Picture6.png)
 
 This curve tells us that the amount of clusters that is optimal for this dataset is 3. We are able to run this method instead of just guessing and checking to attempt an optimal solution. Given this optimization, the k-means model would require much less computing for an optimal solution.
 
