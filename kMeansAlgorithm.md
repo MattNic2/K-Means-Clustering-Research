@@ -1,4 +1,4 @@
-**Linear Algebra and K-means clustering algorithm**
+### **Linear Algebra and K-means clustering algorithm**
 
 Zachary Bohn, Reuella Jacob, Matthew Niculae and Roberto Rodriguez
 
