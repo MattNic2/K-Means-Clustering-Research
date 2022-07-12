@@ -24,6 +24,7 @@ For the sake of simplicity we are ignoring any associated features that a real l
 
 For this basic implementation, a random dataset was generated using a sklearn dataset. The randomized dataset generated was divided up into columns describing two distinct features.
 
+```
 x, y = make\_blobs(n\_samples=400, centers=3, random\_state=20, cluster\_std=1.1)
 
 data = pd.DataFrame(data=x, columns=[&#39;feature1&#39;,&#39;feature2&#39;])
@@ -31,11 +32,14 @@ data = pd.DataFrame(data=x, columns=[&#39;feature1&#39;,&#39;feature2&#39;])
 data.head()
 
 data.describe()
+```
 
 ![](RackMultipart20220711-1-rboya3_html_4ba06b147154a84.png)
 
+
 In order to visualize this dataset, a scatterplot that graphs data based on (feature1, feature2) pairs was utilized.
 
+```
 fig = plt.figure(figsize=(15,8))
 
 plt.scatter(x=data.feature1, y=data.feature2,
@@ -47,6 +51,7 @@ ax = fig.get\_axes()[0]
 ax.set\_axis\_off()
 
 plt.show()
+```
 
 The result of this code segment was as follows:
 
@@ -54,154 +59,119 @@ The result of this code segment was as follows:
 
 The amount of centroids is randomly initialized in the following functions and randomly distributed throughout the scatterPlot
 
+```
 centroids = []
 
-defcentroid\_init(data, ncentroid, figure=True):
+defcentroid_init(data, ncentroid, figure=True):
 
-centroids.clear()
+  centroids.clear()
 
-random\_index = random.sample(range(0, data.shape[0]), ncentroid)
+  random_index = random.sample(range(0, data.shape[0]), ncentroid)
 
-for i, index inenumerate(random\_index):
-
-centroids.append(data.iloc[index].values.tolist())
+  for i, index in enumerate(random_index):
+    centroids.append(data.iloc[index].values.tolist())
 
 if figure == True:
+  fig = plt.figure(figsize=(15,8))
+  sns.scatterplot(x=data.feature1, y=data.feature2,
+    alpha=0.8, s=200, color=&#39;grey&#39;)
 
-fig = plt.figure(figsize=(15,8))
+  for i in range(len(centroids)):
+    plt.scatter(x=centroids[i][0], y=centroids[i][1], marker=&#39;\*&#39;, s=500, color=colors[i], linewidth=2, edgecolor=&#39;k&#39;)
 
-sns.scatterplot(x=data.feature1, y=data.feature2,
+  ax = fig.get_axes()[0]
+  ax.set_axis_off()
 
-alpha=0.8, s=200, color=&#39;grey&#39;)
+  plt.show()
 
-for i inrange(len(centroids)):
-
-plt.scatter(x=centroids[i][0], y=centroids[i][1], marker=&#39;\*&#39;, s=500, color=colors[i], linewidth=2, edgecolor=&#39;k&#39;)
-
-ax = fig.get\_axes()[0]
-
-ax.set\_axis\_off()
-
-plt.show()
-
-centroid\_init(data,3)
+  centroid_init(data,3)
+```
 
 Centroid locations are denoted by stars that appear in different colors based on a previously initialized array
 
 ![](RackMultipart20220711-1-rboya3_html_bb39b3a0ee175a06.png)
 
 In the following code, we measure the euclidean distance between each centroid and data point to assign the data point to a unique cluster classification.
-
+```
 cluster = []
+euclidean_distance = []
 
-euclidean\_distance = []
+def euclidean_distance_func(figure=True):
 
-defeuclidean\_distance\_func(figure=True):
+  cluster.clear()
+  euclidean_distance.clear()
+  
+  for i in range(data.shape[0]):
+    x = []
+    for centroid in centroids:
+      x.append(np.sqrt(np.dot(data.iloc[i].values-centroid, data.iloc[i].values-centroid)))
+    euclidean_distance.append(x)
+    group = euclidean\_distance[i].index(min(euclidean\_distance[i]))
+    cluster.append(group)
 
-cluster.clear()
-
-euclidean\_distance.clear()
-
-for i inrange(data.shape[0]):
-
-x = []
-
-for centroid in centroids:
-
-x.append(np.sqrt(np.dot(data.iloc[i].values-centroid, data.iloc[i].values-centroid)))
-
-euclidean\_distance.append(x)
-
-group = euclidean\_distance[i].index(min(euclidean\_distance[i]))
-
-cluster.append(group)
-
-if figure == True:
-
-fig = plt.figure(figsize=(15,8))
-
-sns.scatterplot(x=data.feature1, y=data.feature2,
-
-alpha=0.6, s=200, hue=cluster, palette=palette)
-
-for i, centroid inenumerate(centroids):
-
-plt.scatter(x=centroid[0], y=centroid[1], marker=&#39;\*&#39;, s=500, color=colors[i], linewidth=2, edgecolor=&#39;k&#39;)
-
-ax = fig.get\_axes()[0]
-
-ax.set\_axis\_off()
-
-plt.legend([])
-
-plt.show()
-
-euclidean\_distance\_func()
-
+  if figure == True:
+    fig = plt.figure(figsize=(15,8))
+    sns.scatterplot(x=data.feature1, y=data.feature2,alpha=0.6, s=200, hue=cluster, palette=palette)
+    for i, centroid inenumerate(centroids):
+      plt.scatter(x=centroid[0], y=centroid[1], marker=&#39;\*&#39;, s=500, color=colors[i], linewidth=2, edgecolor=&#39;k&#39;)
+    ax = fig.get_axes()[0]
+    ax.set\_axis\_off()
+    plt.legend([])
+    plt.show()
+  euclidean_distance_func()
+```
 The cluster classification of these data points results in the following scatterPlot.
 
 ![](RackMultipart20220711-1-rboya3_html_f75d06f7a5e83c6.png)
 
 Following classification of the data points, it is necessary that we find the mean of each cluster and assign the centroid to that mean.
 
-new\_centroids = []
+```
+new_centroids = []
 
-defmove\_centroids(figure=True):
+def move_centroids(figure=True):
 
-new\_centroids.clear()
+  new_centroids.clear()
 
-for i in np.unique(cluster):
+  for i in np.unique(cluster):
 
-df = data[np.array(cluster) == i]
+    df = data[np.array(cluster) == i]
 
-centroid = [df.feature1.mean(), df.feature2.mean()]
+    centroid = [df.feature1.mean(), df.feature2.mean()]
 
-new\_centroids.append(centroid)
+    new_centroids.append(centroid)
 
-if figure == True:
+  if figure == True:
 
-fig = plt.figure(figsize=(15,8))
+    fig = plt.figure(figsize=(15,8))
+    sns.scatterplot(x=data.feature1, y=data.feature2,
+    alpha=0.6, s=200, hue=cluster, palette=palette)
+    
+    for i, centroid inenumerate(new\_centroids):
+      plt.scatter(x=centroid[0], y=centroid[1], marker=&#39;\*&#39;, s=500, color=colors[i], linewidth=2, edgecolor=&#39;k&#39;)
+    ax = fig.get_axes()[0]
+    ax.set_axis_off()
+    plt.legend([])
+    plt.show()
 
-sns.scatterplot(x=data.feature1, y=data.feature2,
-
-alpha=0.6, s=200, hue=cluster, palette=palette)
-
-for i, centroid inenumerate(new\_centroids):
-
-plt.scatter(x=centroid[0], y=centroid[1], marker=&#39;\*&#39;, s=500, color=colors[i], linewidth=2, edgecolor=&#39;k&#39;)
-
-ax = fig.get\_axes()[0]
-
-ax.set\_axis\_off()
-
-plt.legend([])
-
-plt.show()
-
-move\_centroids()
-
+move_centroids()
+```
 Centroid relocation to the cluster means results in the following distribution:
 
 ![](RackMultipart20220711-1-rboya3_html_bc68193b69c79713.png)
 
 The centroids are now very far from convergence and as a result we need to repeat the following steps: 1.) Measure the Euclidean Distance between each datapoint and centroid 2.) Calculate the mean of each cluster and update the centroid with the mean of each cluster. This will be repeated until convergence or until the maximum number of iterations is reached.
+```
+for _ inrange(10):
+  if new_centroids == centroids:
+    break
 
-for \_ inrange(10):
-
-if new\_centroids == centroids:
-
-break
-
-else:
-
-centroids = new\_centroids
-
-new\_centroids = []
-
-euclidean\_distance\_func()
-
-move\_centroids()
-
+  else:
+    centroids = new_centroids
+    new_centroids = []
+    euclidean_distance_func()
+    move_centroids()
+```
 The code returns the following succession of scatter plots:
 
 1.) ![](RackMultipart20220711-1-rboya3_html_a05967f3a1c795a7.png)4.) ![](RackMultipart20220711-1-rboya3_html_f5aed184324d34db.png)
@@ -213,49 +183,39 @@ The code returns the following succession of scatter plots:
 ### **Optimization**
 
 From the given code, we are able to run the unobserved k-means model to optimize the data points&#39; cluster classification and centroid position, however the algorithm itself does not give us a way to find the optimal amount of clusters to allocate. However, given an optimization implemented in python, we are able to find a relationship between WCSS score (within cluster sum of squares) and the number of clusters to use. WCSS is the sum of squared distance between each point and the centroid in a cluster. The following code iterates through the number of clusters and runs the WCSS score for each to determine the optimal solution.
+```
+wcss_list = []
 
-wcss\_list = []
+for n_cluster inrange(1,10):
 
-for n\_cluster inrange(1,10):
+  centroid_init(data, n_cluster, figure=False)
 
-centroid\_init(data, n\_cluster, figure=False)
+  euclidean_distance_func(figure=False)
 
-euclidean\_distance\_func(figure=False)
+  move_centroids(figure=False)
 
-move\_centroids(figure=False)
+  for _ inrange(10):
 
-for \_ inrange(10):
+    if new_centroids == centroids:
+      break
 
-if new\_centroids == centroids:
+    else:
+      centroids = new_centroids
+      new_centroids = []
+      euclidean_distance_func(figure=False)
+      move_centroids(figure=False)
+      
+  wcss = 0
 
-break
+  for i in np.unique(cluster):
+    icluster = 0
+    ddf = data[np.array(cluster) == i]
+    for index in ddf.index:
+      icluster += (euclidean_distance[index][cluster[index]]**2)
 
-else:
-
-centroids = new\_centroids
-
-new\_centroids = []
-
-euclidean\_distance\_func(figure=False)
-
-move\_centroids(figure=False)
-
-wcss = 0
-
-for i in np.unique(cluster):
-
-icluster = 0
-
-ddf = data[np.array(cluster) == i]
-
-for index in ddf.index:
-
-icluster += (euclidean\_distance[index][cluster[index]]\*\*2)
-
-wcss += icluster
-
-wcss\_list.append(wcss)
-
+    wcss += icluster
+  wcss_list.append(wcss)
+```
 Plotting these relationships would yield the following curve:
 
 ![](RackMultipart20220711-1-rboya3_html_911db6a512fe5800.png)
