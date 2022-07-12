@@ -6,11 +6,11 @@ EGR 328, California Baptist University
 
 April 26, 2022
 
-**Abstract**
+## **Abstract**
 
 For this paper the group decided to explore linear algebra in the context of k-means clustering algorithms. The students explored clustering and the details of K-means clustering, various ways to initialize. The students also learned how to improve accuracy of K-means clustering by considering background information of features for any given data set. However, for the sake of simplicity this was only a theoretical approach. They then proceeded to implement K-means clustering on a random dataset. To improve the accuracy of K-means the students wrote a script to evaluate which value of K provided the most optimal results. Starting with this new value of K proved to be helpful in improving accuracy and reducing computation time of the algorithm.
 
-# **Background**
+## **Background**
 
 We plan on exploring linear algebra in the context of clustering when considering data mining and web searches. According to Wagstaff, clustering algorithms are usually implemented when the dataset has no features associated with it. The data is classified on some &quot;notion of similarity&quot; and are considered unsupervised. Clustering is often used to measure if the given data set is useful. K-means is a type of partitional clustering algorithm. It is based on the idea that if we initially start with a sub-optimal clustering by dividing the data into K groups, but update the cluster centers to new means we calculate using the updated members. After a certain amount of iterations we will be able to accurately cluster the data. K-means is relatively simple to implement and scalable to large data sets. It does however cluster outliers and is quite dependent on initial values. This can be problematic if the dataset is not properly sanitized or there are a lot of outliers that can skew those clusters.
 
@@ -20,7 +20,7 @@ In this paper we will be looking at a random data set and implementing K-means c
 
 For the sake of simplicity we are ignoring any associated features that a real life data set might contain. However it is possible to modify K-means clustering to incorporate additional information about the features of the data set. Based on the research done by Wagstaff et al. doing so significantly increases the accuracy of the algorithm. Introducing background information does change the behavior of the algorithm and how it responds to the data. Wagstaff noted that the algorithm tends to become order-sensitive when accepting data. Ignorance in the early stages can lead to instances where the data clusters are not accurate but the algorithm is unable to rorganize the clusters.
 
-### **Practical Implementation**
+## **Practical Implementation**
 
 For this basic implementation, a random dataset was generated using a sklearn dataset. The randomized dataset generated was divided up into columns describing two distinct features.
 
@@ -180,7 +180,7 @@ The code returns the following succession of scatter plots:
 
 3.) ![](RackMultipart20220711-1-rboya3_html_ec73f30f71a84fe3.png)6.) ![](RackMultipart20220711-1-rboya3_html_f5aed184324d34db.png)
 
-### **Optimization**
+## **Optimization**
 
 From the given code, we are able to run the unobserved k-means model to optimize the data points&#39; cluster classification and centroid position, however the algorithm itself does not give us a way to find the optimal amount of clusters to allocate. However, given an optimization implemented in python, we are able to find a relationship between WCSS score (within cluster sum of squares) and the number of clusters to use. WCSS is the sum of squared distance between each point and the centroid in a cluster. The following code iterates through the number of clusters and runs the WCSS score for each to determine the optimal solution.
 ```
@@ -222,7 +222,7 @@ Plotting these relationships would yield the following curve:
 
 This curve tells us that the amount of clusters that is optimal for this dataset is 3. We are able to run this method instead of just guessing and checking to attempt an optimal solution. Given this optimization, the k-means model would require much less computing for an optimal solution.
 
-### **Conclusion**
+## **Conclusion**
 
 In the course of this paper, we explored a basic implementation of the K-means model on. As a result of it being an unsupervised algorithm, the K-means model can be run on data with a lot less descriptive information which is optimal for market segmentation, document clustering, image segmentation, and image compression. Upon implementing this model, it was discovered that we could optimize the setup process by including a statistic to determine the optimal amount of clusters within the dataset. For this randomized dataset, the clusters seemed apparent but that&#39;s because it was initialized that way. When running a model on other datasets, the optimal amount of clusters will not be as clear. Finding the WCSS score prior to centroid classification would be the optimal route to follow. The computing power that it takes to calculate the WCSS is negligible compared to that of other cluster estimation strategies. This optimization will help with one of the K-means model major disadvantages: estimating the optimal number of clusters.
 
