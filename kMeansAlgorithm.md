@@ -1,9 +1,6 @@
 **Linear Algebra and K-means clustering algorithm**
 
 Zachary Bohn, Reuella Jacob, Matthew Niculae and Roberto Rodriguez
-
-EGR 328, California Baptist University
-
 April 26, 2022
 
 ## **Abstract**
